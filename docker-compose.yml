@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  node:
+    restart: always
+    build: .
+    ports:
+      - 8080:8080
+    links:
+      - redis:redis
+    volumes:
+      - ./:/code
+    depends_on:
+      - "redis"
+      - "mongo"
+  mongo:
+    image: mongo:latest
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+  redis:
+    image: 'redis:latest'
+    expose:
+      - "6379"
+
+volumes:
+  mongodb:
